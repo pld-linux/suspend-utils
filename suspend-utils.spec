@@ -6,7 +6,7 @@ Release:	0.%{snap}.1
 License:	GPL v2
 Group:		Applications/System
 Source0:	%{name}-%{snap}.tar.gz
-# Source0-md5:	02356c96a511493e4baa6ac1949ce016
+# Source0-md5:	cc0a800e24d6253107ff85b119b88e21
 URL:		http://sourceforge.net/projects/suspend
 BuildRequires:	liblzf-static
 BuildRequires:	pciutils-devel
