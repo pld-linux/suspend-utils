@@ -8,6 +8,7 @@ Group:		Applications/System
 Source0:	%{name}-%{snap}.tar.gz
 # Source0-md5:	cc0a800e24d6253107ff85b119b88e21
 URL:		http://sourceforge.net/projects/suspend
+BuildRequires:	glibc-static
 BuildRequires:	liblzf-static
 BuildRequires:	pciutils-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
