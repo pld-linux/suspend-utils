@@ -1,6 +1,6 @@
 %define	snap	20060222
 Summary:	Suspend to RAM
-Name:		s2ram
+Name:		suspend
 Version:	0.1
 Release:	0.%{snap}.1
 License:	GPL v2
@@ -16,7 +16,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Userland parts needed for suspend-to-disk and suspend-to-RAM on Linux.
 
 %prep
-%setup -q -n suspend
+%setup -q -n %{name}
 
 %build
 sed -i -e 's#gcc#%{__cc}#g' Makefile
