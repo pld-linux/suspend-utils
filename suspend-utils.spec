@@ -5,12 +5,13 @@ Version:	0.1
 Release:	0.%{snap}.1
 License:	GPL v2
 Group:		Applications/System
-Source0:	%{name}-%{snap}.tar.gz
+Source0:	http://ep09.pld-linux.org/~arekm/%{name}-20060222.tar.gz
 # Source0-md5:	cc0a800e24d6253107ff85b119b88e21
 URL:		http://sourceforge.net/projects/suspend
 BuildRequires:	glibc-static
 BuildRequires:	liblzf-static
 BuildRequires:	pciutils-devel
+BuildRequires:	sed >= 4.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -18,9 +19,9 @@ Userland parts needed for suspend-to-disk and suspend-to-RAM on Linux.
 
 %prep
 %setup -q -n %{name}
+sed -i -e 's#gcc#%{__cc}#g' Makefile
 
 %build
-sed -i -e 's#gcc#%{__cc}#g' Makefile
 %{__make} \
 	CC_FLAGS="%{rpmcflags} -DCONFIG_COMPRESS" \
 	LD_FLAGS="%{rpmldflags} -llzf"
