@@ -1,5 +1,6 @@
 %define	snap	20060222
 Summary:	Suspend to RAM
+Summary(pl):	Zamra¿anie w RAM
 Name:		suspend
 Version:	0.1
 Release:	0.%{snap}.1
@@ -16,6 +17,10 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Userland parts needed for suspend-to-disk and suspend-to-RAM on Linux.
+
+%description -l pl
+Elementy przestrzeni u¿ytkownika potrzebne do zamra¿ania stanu systemu
+na dysku lub w pamiêci RAM pod Linuksem.
 
 %prep
 %setup -q -n %{name}
