@@ -8,6 +8,7 @@ License:	GPL v2
 Group:		Applications/System
 Source0:	http://ep09.pld-linux.org/~arekm/%{name}-%{snap}.tar.gz
 # Source0-md5:	a7b6336cce2c72cf7a7c36bfa2b24d0f
+Patch0:		%{name}-whitelist.patch
 URL:		http://sourceforge.net/projects/suspend
 BuildRequires:	glibc-static
 BuildRequires:	liblzf-static
@@ -24,6 +25,7 @@ na dysku lub w pamiêci RAM pod Linuksem.
 
 %prep
 %setup -q -n %{name}
+%patch0 -p1
 sed -i -e 's#gcc#%{__cc}#g' Makefile
 
 %build
