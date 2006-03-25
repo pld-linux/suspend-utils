@@ -27,13 +27,7 @@ na dysku lub w pamiêci RAM pod Linuksem.
 sed -i -e 's#gcc#%{__cc}#g' Makefile
 
 %build
-echo '
-#include <stdio.h>
-#include <unistd.h>
-int main() { printf("%%d\\n", getpagesize()); return 0; }
-' > test-getpagesize.c
-%{__cc} %{rpmcflags} test-getpagesize.c -o test-getpagesize
-sed -i -e "s#PAGE_SIZE#$(./test-getpagesize)#g" *.c *.h
+sed -i -e "s#PAGE_SIZE#$(%{_bindir}/getconf PAGE_SIZE)#g" *.c *.h
 %{__make} \
 	CC_FLAGS="%{rpmcflags} -DCONFIG_COMPRESS" \
 	LD_FLAGS="%{rpmldflags} -llzf"
