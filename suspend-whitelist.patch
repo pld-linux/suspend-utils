@@ -1,0 +1,12 @@
+diff -urN suspend.org/whitelist.c suspend/whitelist.c
+--- suspend.org/whitelist.c	2006-03-23 20:14:35.000000000 +0100
++++ suspend/whitelist.c	2006-03-25 15:04:43.000000000 +0100
+@@ -200,6 +200,8 @@
+ 	{ "IBM",			"1866*",		"",	"", VBE_POST|VBE_SAVE|UNSURE },
+ 	{ "IBM",			"1867*",		"",	"", VBE_POST|VBE_SAVE|UNSURE },
+ 	{ "IBM",			"1869*",		"",	"", VBE_POST|VBE_SAVE|UNSURE },
++	// Z60M
++	{ "IBM",			"2529*",		"",	"", VBE_POST|VBE_SAVE|UNSURE|RADEON_OFF },
+ 
+ 	{ "Samsung Electronics",	"NX05S*",		"",	"", VBE_POST|VBE_SAVE|UNSURE },
+ 	{ "SHARP Corporation",		"PC-MM20 Series*",	"",	"", VBE_POST|VBE_SAVE|UNSURE },
