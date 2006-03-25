@@ -14,6 +14,7 @@ BuildRequires:	glibc-static
 BuildRequires:	liblzf-static
 BuildRequires:	pciutils-devel
 BuildRequires:	sed >= 4.0
+ExclusiveArch:	%{ix86} %{x8464}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
