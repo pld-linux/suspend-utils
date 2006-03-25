@@ -14,7 +14,7 @@ BuildRequires:	glibc-static
 BuildRequires:	liblzf-static
 BuildRequires:	pciutils-devel
 BuildRequires:	sed >= 4.0
-ExclusiveArch:	%{ix86} %{x8464}
+ExclusiveArch:	%{ix86} %{x8664}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -32,6 +32,9 @@ sed -i -e 's#gcc#%{__cc}#g' Makefile
 %build
 sed -i -e "s#PAGE_SIZE#$(%{_bindir}/getconf PAGE_SIZE)#g" *.c *.h
 %{__make} \
+%ifarch %{x8664}
+	ARCH="x86_64" \
+%endif
 	CC_FLAGS="%{rpmcflags} -DCONFIG_COMPRESS" \
 	LD_FLAGS="%{rpmldflags} -llzf"
 
