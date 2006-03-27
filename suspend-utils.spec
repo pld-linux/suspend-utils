@@ -1,4 +1,4 @@
-%define	snap	20060325
+%define	snap	20060327
 Summary:	Suspend to RAM
 Summary(pl):	Zamra¿anie w RAM
 Name:		suspend
@@ -7,7 +7,7 @@ Release:	0.%{snap}.1
 License:	GPL v2
 Group:		Applications/System
 Source0:	http://ep09.pld-linux.org/~arekm/%{name}-%{snap}.tar.gz
-# Source0-md5:	a7b6336cce2c72cf7a7c36bfa2b24d0f
+# Source0-md5:	18cc87eb5e79db146a23d2b6a3c9d562
 Patch0:		%{name}-whitelist.patch
 URL:		http://sourceforge.net/projects/suspend
 BuildRequires:	glibc-static
