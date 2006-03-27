@@ -27,11 +27,11 @@ na dysku lub w pamiêci RAM pod Linuksem.
 %prep
 %setup -q -n %{name}
 %patch0 -p1
-sed -i -e 's#gcc#%{__cc}#g' Makefile
 
 %build
 sed -i -e "s#PAGE_SIZE#$(%{_bindir}/getconf PAGE_SIZE)#g" *.c *.h
 %{__make} \
+	CC="%{__cc}" \
 %ifarch %{x8664}
 	ARCH="x86_64" \
 %endif
