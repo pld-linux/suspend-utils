@@ -3,7 +3,7 @@ Summary:	Suspend to RAM
 Summary(pl):	Zamra¿anie w RAM
 Name:		suspend
 Version:	0.1
-Release:	0.%{snap}.1
+Release:	0.%{snap}.2
 License:	GPL v2
 Group:		Applications/System
 Source0:	http://ep09.pld-linux.org/~arekm/%{name}-%{snap}.tar.gz
