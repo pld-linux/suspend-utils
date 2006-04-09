@@ -1,13 +1,13 @@
-%define	snap	20060327
+%define	snap	20060409
 Summary:	Suspend to RAM
 Summary(pl):	Zamra¿anie w RAM
 Name:		suspend
 Version:	0.1
-Release:	0.%{snap}.2
+Release:	0.%{snap}.1
 License:	GPL v2
 Group:		Applications/System
 Source0:	http://ep09.pld-linux.org/~arekm/%{name}-%{snap}.tar.gz
-# Source0-md5:	18cc87eb5e79db146a23d2b6a3c9d562
+# Source0-md5:	7ac86007bde8d2571a25b71acd5d6d73
 URL:		http://sourceforge.net/projects/suspend
 BuildRequires:	glibc-static
 BuildRequires:	liblzf-static
@@ -27,12 +27,9 @@ na dysku lub w pamiêci RAM pod Linuksem.
 %setup -q -n %{name}
 
 %build
-sed -i -e "s#PAGE_SIZE#$(%{_bindir}/getconf PAGE_SIZE)#g" *.c *.h
 %{__make} \
 	CC="%{__cc}" \
-%ifarch %{x8664}
-	ARCH="x86_64" \
-%endif
+	ARCH="%{_target_cpu}" \
 	CC_FLAGS="%{rpmcflags} -DCONFIG_COMPRESS" \
 	LD_FLAGS="%{rpmldflags} -llzf"
 
