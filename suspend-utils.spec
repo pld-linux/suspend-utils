@@ -1,5 +1,6 @@
 %define	snap	20060409
 Summary:	Suspend to RAM
+Summary(de):	Einfrieren in den Systemspeicher (RAM)
 Summary(pl):	Zamra¿anie w RAM
 Name:		suspend
 Version:	0.1
@@ -8,9 +9,10 @@ License:	GPL v2
 Group:		Applications/System
 Source0:	http://ep09.pld-linux.org/~arekm/%{name}-%{snap}.tar.gz
 # Source0-md5:	7ac86007bde8d2571a25b71acd5d6d73
+Patch0:		%{name}-Makefile.patch
 URL:		http://sourceforge.net/projects/suspend
-BuildRequires:	glibc-static
-BuildRequires:	liblzf-static
+BuildRequires:	glibc-devel
+BuildRequires:	liblzf-devel
 BuildRequires:	pciutils-devel
 BuildRequires:	sed >= 4.0
 ExclusiveArch:	%{ix86} %{x8664}
@@ -19,12 +21,17 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 Userland parts needed for suspend-to-disk and suspend-to-RAM on Linux.
 
+%description -l de
+Elemente der Benutzerumgebung zum einfrieren in den Systemspeicher
+oder auf die Festplatte.
+
 %description -l pl
 Elementy przestrzeni u¿ytkownika potrzebne do zamra¿ania stanu systemu
 na dysku lub w pamiêci RAM pod Linuksem.
 
 %prep
 %setup -q -n %{name}
+%patch0 -p0
 
 %build
 %{__make} \
