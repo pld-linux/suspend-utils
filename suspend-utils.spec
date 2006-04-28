@@ -9,10 +9,9 @@ License:	GPL v2
 Group:		Applications/System
 Source0:	http://ep09.pld-linux.org/~arekm/%{name}-%{snap}.tar.gz
 # Source0-md5:	7ac86007bde8d2571a25b71acd5d6d73
-Patch0:		%{name}-Makefile.patch
 URL:		http://sourceforge.net/projects/suspend
-BuildRequires:	glibc-devel
-BuildRequires:	liblzf-devel
+BuildRequires:	glibc-static
+BuildRequires:	liblzf-static
 BuildRequires:	pciutils-devel
 BuildRequires:	sed >= 4.0
 ExclusiveArch:	%{ix86} %{x8664}
@@ -31,7 +30,6 @@ na dysku lub w pamiêci RAM pod Linuksem.
 
 %prep
 %setup -q -n %{name}
-%patch0 -p0
 
 %build
 %{__make} \
