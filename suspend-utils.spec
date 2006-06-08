@@ -1,4 +1,4 @@
-%define	_snap	20060409
+%define	_snap	20060608
 %define	_rel	1
 Summary:	Suspend to RAM
 Summary(de):	Einfrieren in den Systemspeicher (RAM)
@@ -9,7 +9,7 @@ Release:	0.%{_snap}.%{_rel}
 License:	GPL v2
 Group:		Applications/System
 Source0:	http://ep09.pld-linux.org/~arekm/%{name}-%{_snap}.tar.gz
-# Source0-md5:	7ac86007bde8d2571a25b71acd5d6d73
+# Source0-md5:	46af7ad6300d14d1334163ed65967672
 URL:		http://sourceforge.net/projects/suspend
 BuildRequires:	glibc-static
 BuildRequires:	liblzf-static
