@@ -53,4 +53,4 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc HOWTO README TODO
 %attr(755,root,root) %{_sbindir}/*
-%attr(644,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/suspend.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/suspend.conf
