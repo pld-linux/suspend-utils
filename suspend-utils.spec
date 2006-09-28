@@ -1,5 +1,7 @@
-%define	_snap	20060807
-%define	_rel	2
+%bcond_with	splashy
+#
+%define	_snap	20060928
+%define	_rel	1
 Summary:	Suspend to RAM
 Summary(de):	Einfrieren in den Systemspeicher (RAM)
 Summary(pl):	Zamra¿anie w RAM
@@ -10,12 +12,15 @@ License:	GPL v2
 Group:		Applications/System
 Source0:	http://ep09.pld-linux.org/~arekm/%{name}-%{_snap}.tar.gz
 # Source0-md5:	c89ebdf1b25e31d05ae86c73e68c4289
-Patch0:		%{name}-zlib.patch
+Patch0:		%{name}-build.patch
 URL:		http://sourceforge.net/projects/suspend
 BuildRequires:	glibc-static
+BuildRequires:	libgcrypt-static
+BuildRequires:	libgpg-error-static
 BuildRequires:	liblzf-static
 BuildRequires:	pciutils-devel
 BuildRequires:	sed >= 4.0
+%{?with_splashy:BuildRequires:	splashy-devel}
 ExclusiveArch:	%{ix86} %{x8664}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -36,16 +41,19 @@ na dysku lub w pamiêci RAM pod Linuksem.
 
 %build
 %{__make} \
+	CONFIG_COMPRESS=yes \
+	CONFIG_ENCRYPT=yes \
+	%{?with_splashy:CONFIG_SPLASHY=yes} \
 	CC="%{__cc}" \
 	ARCH="%{_target_cpu}" \
-	CC_FLAGS="%{rpmcflags} -DCONFIG_COMPRESS" \
-	LD_FLAGS="%{rpmldflags} -llzf"
+	CFLAGS="%{rpmcflags}" \
+	LDFLAGS="%{rpmldflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},%{_sysconfdir}}
 
-install resume s2both s2disk s2ram $RPM_BUILD_ROOT%{_sbindir}
+install resume s2both s2disk s2ram suspend-keygen $RPM_BUILD_ROOT%{_sbindir}
 install conf/suspend.conf $RPM_BUILD_ROOT%{_sysconfdir}
 
 %clean
