@@ -11,7 +11,7 @@ Release:	0.%{_snap}.%{_rel}
 License:	GPL v2
 Group:		Applications/System
 Source0:	http://ep09.pld-linux.org/~arekm/%{name}-%{_snap}.tar.gz
-# Source0-md5:	c89ebdf1b25e31d05ae86c73e68c4289
+# Source0-md5:	b84af9b27978f274815ab75e6b7ad2e1
 Patch0:		%{name}-build.patch
 URL:		http://sourceforge.net/projects/suspend
 BuildRequires:	glibc-static
