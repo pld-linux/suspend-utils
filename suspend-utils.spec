@@ -21,6 +21,7 @@ BuildRequires:	liblzf-static
 BuildRequires:	pciutils-devel
 BuildRequires:	sed >= 4.0
 %{?with_splashy:BuildRequires:	splashy-devel}
+BuildRequires:	zlib-devel
 ExclusiveArch:	%{ix86} %{x8664}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
