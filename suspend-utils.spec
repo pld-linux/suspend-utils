@@ -52,7 +52,7 @@ na dysku lub w pamiêci RAM pod Linuksem.
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},%{_sysconfdir}}
 
-install resume s2both s2disk s2ram suspend-keygen $RPM_BUILD_ROOT%{_sbindir}
+install resume s2both s2disk s2ram suspend-keygen swap-offset $RPM_BUILD_ROOT%{_sbindir}
 install conf/suspend.conf $RPM_BUILD_ROOT%{_sysconfdir}
 
 %clean
@@ -60,6 +60,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc HOWTO README* TODO
+%doc ChangeLog HOWTO README* TODO ReleaseNotes
 %attr(755,root,root) %{_sbindir}/*
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/suspend.conf
