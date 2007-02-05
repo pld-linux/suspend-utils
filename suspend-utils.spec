@@ -1,6 +1,6 @@
 %bcond_with	splashy
 #
-%define	snap	20070116
+%define	snap	20070205
 Summary:	Suspend to RAM
 Summary(de):	Einfrieren in den Systemspeicher (RAM)
 Summary(pl):	Zamra¿anie w RAM
@@ -10,7 +10,7 @@ Release:	0.%{snap}.1
 License:	GPL v2
 Group:		Applications/System
 Source0:	%{name}-%{snap}.tar.gz
-# Source0-md5:	487d63ea81c6cdee761233e9e468dc3f
+# Source0-md5:	dd486bb871e8c119027733d0daa51c58
 Patch0:		%{name}-build.patch
 URL:		http://sourceforge.net/projects/suspend
 BuildRequires:	glibc-static
@@ -47,7 +47,7 @@ na dysku lub w pamiêci RAM pod Linuksem.
 	CC="%{__cc}" \
 	ARCH="%{_target_cpu}" \
 	CFLAGS="%{rpmcflags}" \
-	LDFLAGS="%{rpmldflags}"
+	LD_FLAGS="%{rpmldflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
