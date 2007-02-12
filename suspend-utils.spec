@@ -2,8 +2,8 @@
 #
 %define	snap	20070205
 Summary:	Suspend to RAM
-Summary(de):	Einfrieren in den Systemspeicher (RAM)
-Summary(pl):	Zamraøanie w RAM
+Summary(de.UTF-8):   Einfrieren in den Systemspeicher (RAM)
+Summary(pl.UTF-8):   Zamra≈ºanie w RAM
 Name:		suspend
 Version:	0.6
 Release:	0.%{snap}.1
@@ -27,13 +27,13 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 Userland parts needed for suspend-to-disk and suspend-to-RAM on Linux.
 
-%description -l de
+%description -l de.UTF-8
 Elemente der Benutzerumgebung zum einfrieren in den Systemspeicher
 oder auf die Festplatte.
 
-%description -l pl
-Elementy przestrzeni uøytkownika potrzebne do zamraøania stanu systemu
-na dysku lub w pamiÍci RAM pod Linuksem.
+%description -l pl.UTF-8
+Elementy przestrzeni u≈ºytkownika potrzebne do zamra≈ºania stanu systemu
+na dysku lub w pamiƒôci RAM pod Linuksem.
 
 %prep
 %setup -q -n %{name}
