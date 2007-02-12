@@ -2,8 +2,8 @@
 #
 %define	snap	20070205
 Summary:	Suspend to RAM
-Summary(de.UTF-8):   Einfrieren in den Systemspeicher (RAM)
-Summary(pl.UTF-8):   Zamrażanie w RAM
+Summary(de.UTF-8):	Einfrieren in den Systemspeicher (RAM)
+Summary(pl.UTF-8):	Zamrażanie w RAM
 Name:		suspend
 Version:	0.6
 Release:	0.%{snap}.1
