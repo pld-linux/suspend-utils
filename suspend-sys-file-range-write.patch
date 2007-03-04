@@ -1,0 +1,14 @@
+diff -ruN suspend./swsusp.h suspend/swsusp.h
+--- suspend./swsusp.h	2007-03-04 13:51:37.002038348 +0100
++++ suspend/swsusp.h	2007-03-04 13:51:06.737655370 +0100
+@@ -153,6 +153,10 @@
+ 		LINUX_REBOOT_CMD_POWER_OFF, 0);
+ }
+ 
++#ifdef SYS_sync_file_range
++#undef SYS_sync_file_range
++#endif
++
+ #ifndef SYS_sync_file_range
+  #ifdef __i386__
+   #define SYS_sync_file_range	314
