@@ -12,6 +12,7 @@ Group:		Applications/System
 Source0:	%{name}-%{snap}.tar.gz
 # Source0-md5:	dd486bb871e8c119027733d0daa51c58
 Patch0:		%{name}-build.patch
+Patch1:		%{name}-sys-file-range-write.patch
 URL:		http://sourceforge.net/projects/suspend
 BuildRequires:	glibc-static
 BuildRequires:	libgcrypt-static
@@ -38,6 +39,7 @@ na dysku lub w pamięci RAM pod Linuksem.
 %prep
 %setup -q -n %{name}
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__make} \
