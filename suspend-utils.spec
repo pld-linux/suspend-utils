@@ -10,7 +10,7 @@ Release:	0.%{snap}.1
 License:	GPL v2
 Group:		Applications/System
 Source0:	%{name}-%{snap}.tar.gz
-# Source0-md5:	dd486bb871e8c119027733d0daa51c58
+# Source0-md5:	cc48a5c110d01dcea50fd102764289a0
 Patch0:		%{name}-sys-file-range-write.patch
 URL:		http://sourceforge.net/projects/suspend
 BuildRequires:	glibc-static
