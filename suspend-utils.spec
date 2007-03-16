@@ -1,6 +1,6 @@
 %bcond_with	splashy
 #
-%define	snap	20070305
+%define	snap	20070316
 Summary:	Suspend to RAM
 Summary(de.UTF-8):	Einfrieren in den Systemspeicher (RAM)
 Summary(pl.UTF-8):	Zamrażanie w RAM
@@ -10,13 +10,14 @@ Release:	0.%{snap}.1
 License:	GPL v2
 Group:		Applications/System
 Source0:	%{name}-%{snap}.tar.gz
-# Source0-md5:	cc48a5c110d01dcea50fd102764289a0
+# Source0-md5:	ce3aea71f690fd4473f5947d02785c77
 Patch0:		%{name}-sys-file-range-write.patch
 URL:		http://sourceforge.net/projects/suspend
 BuildRequires:	glibc-static
 BuildRequires:	libgcrypt-static
 BuildRequires:	libgpg-error-static
 BuildRequires:	liblzf-static
+BuildRequires:	libx86-static
 BuildRequires:	pciutils-devel
 BuildRequires:	sed >= 4.0
 %{?with_splashy:BuildRequires:	splashy-devel}
