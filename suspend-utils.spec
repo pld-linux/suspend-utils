@@ -19,7 +19,9 @@ BuildRequires:	glibc-static
 BuildRequires:	libgcrypt-static
 BuildRequires:	libgpg-error-static
 BuildRequires:	liblzf-static
+%ifarch %{ix86} %{x8664}
 BuildRequires:	libx86-static
+%endif
 BuildRequires:	pciutils-devel
 BuildRequires:	sed >= 4.0
 %{?with_splashy:BuildRequires:	splashy-devel}
