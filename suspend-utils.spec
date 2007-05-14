@@ -3,9 +3,9 @@
 %bcond_with	splashy
 #
 %define	snap	20070514
-Summary:	Suspend to RAM
-Summary(de.UTF-8):	Einfrieren in den Systemspeicher (RAM)
-Summary(pl.UTF-8):	Zamrażanie w RAM
+Summary:	Suspend to RAM/Disk/Both
+Summary(de.UTF-8):	Einfrieren in den Systemspeicher
+Summary(pl.UTF-8):	Zamrażanie w RAM/Dysku/Jedno i drugie
 Name:		suspend
 Version:	0.6
 Release:	0.%{snap}.1
