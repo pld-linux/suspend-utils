@@ -1,6 +1,8 @@
+%define	suspend_cpu	%(echo %{_target_cpu} | sed -e s/i.86/x86/ -e s/ppc.*/ppc/)
+#
 %bcond_with	splashy
 #
-%define	snap	20070316
+%define	snap	20070514
 Summary:	Suspend to RAM
 Summary(de.UTF-8):	Einfrieren in den Systemspeicher (RAM)
 Summary(pl.UTF-8):	Zamrażanie w RAM
@@ -10,7 +12,7 @@ Release:	0.%{snap}.1
 License:	GPL v2
 Group:		Applications/System
 Source0:	%{name}-%{snap}.tar.gz
-# Source0-md5:	ce3aea71f690fd4473f5947d02785c77
+# Source0-md5:	57b654549d064e0fa5c62e8201bad3b3
 Patch0:		%{name}-sys-file-range-write.patch
 URL:		http://sourceforge.net/projects/suspend
 BuildRequires:	glibc-static
@@ -22,7 +24,7 @@ BuildRequires:	pciutils-devel
 BuildRequires:	sed >= 4.0
 %{?with_splashy:BuildRequires:	splashy-devel}
 BuildRequires:	zlib-devel
-ExclusiveArch:	%{ix86} %{x8664}
+ExclusiveArch:	%{ix86} %{x8664} ppc ppc64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -46,7 +48,7 @@ na dysku lub w pamięci RAM pod Linuksem.
 	CONFIG_ENCRYPT=yes \
 	%{?with_splashy:CONFIG_SPLASHY=yes} \
 	CC="%{__cc}" \
-	ARCH="%{_target_cpu}" \
+	ARCH="%{suspend_cpu}" \
 	CFLAGS="%{rpmcflags}" \
 	LD_FLAGS="%{rpmldflags}"
 
