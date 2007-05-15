@@ -1,4 +1,4 @@
-%define	suspend_cpu	%(echo %{_target_cpu} | sed -e s/i.86/x86/ -e s/ppc.*/ppc/)
+%define	suspend_cpu	%(echo %{_target_cpu} | sed -e s/i.86/x86/ -e s/ppc.*/ppc/ -e s/x86_64/x86/ -e s/athlon/x86/)
 #
 %bcond_with	splashy
 #
