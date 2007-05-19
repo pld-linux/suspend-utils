@@ -1,4 +1,4 @@
-%define	suspend_cpu	%(echo %{_target_cpu} | sed -e s/i.86/x86/ -e s/ppc.*/ppc/ -e s/x86_64/x86/ -e s/athlon/x86/)
+%define	suspend_cpu	%(echo %{_target_cpu} | sed -e s/i.86/x86/ -e s/ppc.*/ppc/ -e s/x86_64/x86/ -e s/amd64/x86/ -e s/athlon/x86/)
 #
 %bcond_with	splashy
 #
@@ -43,8 +43,6 @@ na dysku lub w pamięci RAM pod Linuksem.
 %prep
 %setup -q -n %{name}
 %patch0 -p1
-
-ln -sf s2ram-x86.h s2ram-amd64.h
 
 %build
 %{__make} \
