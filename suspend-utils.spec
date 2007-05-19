@@ -1,6 +1,6 @@
 %define	suspend_cpu	%(echo %{_target_cpu} | sed -e s/i.86/x86/ -e s/ppc.*/ppc/ -e s/x86_64/x86/ -e s/amd64/x86/ -e s/athlon/x86/)
 #
-%bcond_wit	splashy
+%bcond_with	splashy
 #
 %define	snap	20070514
 Summary:	Suspend to RAM/Disk/Both
