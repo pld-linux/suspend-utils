@@ -1,6 +1,6 @@
 %define	suspend_cpu	%(echo %{_target_cpu} | sed -e s/i.86/x86/ -e s/ppc.*/ppc/ -e s/x86_64/x86/ -e s/amd64/x86/ -e s/athlon/x86/)
 #
-%bcond_with	splashy
+%bcond_wit	splashy
 #
 %define	snap	20070514
 Summary:	Suspend to RAM/Disk/Both
@@ -24,7 +24,13 @@ BuildRequires:	libx86-static
 %endif
 BuildRequires:	pciutils-devel
 BuildRequires:	sed >= 4.0
-%{?with_splashy:BuildRequires:	splashy-devel}
+%if %{with splashy}
+BuildRequires:	libjpeg-static
+BuildRequires:	freetype-static
+BuildRequires:	libpng-static
+BuildRequires:	DirectFB-static
+BuildRequires:	splashy-static
+%endif
 BuildRequires:	zlib-devel
 ExclusiveArch:	%{ix86} %{x8664} ppc ppc64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
