@@ -2,17 +2,17 @@
 #
 %bcond_with	splashy
 #
-%define	snap	20070514
+%define	snap	20070801
 Summary:	Suspend to RAM/Disk/Both
 Summary(de.UTF-8):	Einfrieren in den Systemspeicher
 Summary(pl.UTF-8):	Zamrażanie w RAM/Dysku/Jedno i drugie
 Name:		suspend
 Version:	0.6
-Release:	0.%{snap}.3
+Release:	0.%{snap}.1
 License:	GPL v2
 Group:		Applications/System
 Source0:	%{name}-%{snap}.tar.gz
-# Source0-md5:	57b654549d064e0fa5c62e8201bad3b3
+# Source0-md5:	dfff27971bc492750d34a19d24ab5322
 Patch0:		%{name}-sys-file-range-write.patch
 URL:		http://sourceforge.net/projects/suspend
 BuildRequires:	glibc-static
