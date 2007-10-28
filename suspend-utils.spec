@@ -1,8 +1,7 @@
-%define	suspend_cpu	%(echo %{_target_cpu} | sed -e s/i.86/x86/ -e s/ppc.*/ppc/ -e s/x86_64/x86/ -e s/amd64/x86/ -e s/athlon/x86/)
 #
 %bcond_with	splashy
 #
-%define	snap	20070913
+%define	snap	20071028
 Summary:	Suspend to RAM/Disk/Both
 Summary(de.UTF-8):	Einfrieren in den Systemspeicher
 Summary(pl.UTF-8):	Zamrażanie w RAM/Dysku/Jedno i drugie
@@ -11,10 +10,13 @@ Version:	0.7
 Release:	0.%{snap}.1
 License:	GPL v2
 Group:		Applications/System
-Source0:	%{name}-%{snap}.tar.gz
-# Source0-md5:	3ea2ee54b597dd6f1feb5bd0fe4263b3
+Source0:	%{name}-%{snap}.tar.bz2
+# Source0-md5:	7ab0f6db95e3fe0b0e52213fa415623a
 Patch0:		%{name}-sys-file-range-write.patch
 URL:		http://sourceforge.net/projects/suspend
+BuildRequires:	automake
+BuildRequires:	autoconf
+BuildRequires:	libtool
 BuildRequires:	glibc-static
 BuildRequires:	libgcrypt-static
 BuildRequires:	libgpg-error-static
@@ -32,6 +34,7 @@ BuildRequires:	DirectFB-static
 BuildRequires:	splashy-static
 %endif
 BuildRequires:	zlib-devel
+Conflicts:	geninitrd < 8880
 ExclusiveArch:	%{ix86} %{x8664} ppc ppc64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -51,21 +54,20 @@ na dysku lub w pamięci RAM pod Linuksem.
 %patch0 -p1
 
 %build
-%{__make} \
-	CONFIG_COMPRESS=yes \
-	CONFIG_ENCRYPT=yes \
-	%{?with_splashy:CONFIG_SPLASHY=yes} \
-	CC="%{__cc}" \
-	ARCH="%{suspend_cpu}" \
-	CFLAGS="%{rpmcflags}" \
-	LD_FLAGS="%{rpmldflags}"
+%{__libtoolize}
+%{__aclocal}
+%{__autoheader}
+%{__autoconf}
+%{__automake}
+
+%configure
+%{__make} 
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sbindir},%{_sysconfdir}}
 
-install resume s2both s2disk s2ram suspend-keygen swap-offset $RPM_BUILD_ROOT%{_sbindir}
-install conf/suspend.conf $RPM_BUILD_ROOT%{_sysconfdir}
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -74,4 +76,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc HOWTO README* TODO
 %attr(755,root,root) %{_sbindir}/*
+%dir %{_libdir}/suspend
+%attr(755,root,root) %{_libdir}/suspend/resume
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/suspend.conf
