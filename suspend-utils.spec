@@ -6,7 +6,7 @@ Summary:	Suspend to RAM/Disk/Both
 Summary(de.UTF-8):	Einfrieren in den Systemspeicher
 Summary(pl.UTF-8):	Zamrażanie w RAM/Dysku/Jedno i drugie
 Name:		suspend
-Version:	0.7
+Version:	0.8
 Release:	0.%{snap}.1
 License:	GPL v2
 Group:		Applications/System
