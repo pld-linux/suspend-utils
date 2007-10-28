@@ -38,6 +38,9 @@ Conflicts:	geninitrd < 8880
 ExclusiveArch:	%{ix86} %{x8664} ppc ppc64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+# libz for gzopen gets discarded if same cache reused (probably ac variables conflict)
+%undefine	configure_cache
+
 %description
 Userland parts needed for suspend-to-disk and suspend-to-RAM on Linux.
 
