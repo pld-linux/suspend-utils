@@ -14,12 +14,12 @@ Source0:	%{name}-%{snap}.tar.bz2
 # Source0-md5:	7ab0f6db95e3fe0b0e52213fa415623a
 Patch0:		%{name}-sys-file-range-write.patch
 URL:		http://sourceforge.net/projects/suspend
-BuildRequires:	automake
 BuildRequires:	autoconf
-BuildRequires:	libtool
+BuildRequires:	automake
 BuildRequires:	glibc-static
 BuildRequires:	libgcrypt-static
 BuildRequires:	libgpg-error-static
+BuildRequires:	libtool
 BuildRequires:	lzo-static >= 2.02
 %ifarch %{ix86} %{x8664}
 BuildRequires:	libx86-static
@@ -27,10 +27,10 @@ BuildRequires:	libx86-static
 BuildRequires:	pciutils-devel
 BuildRequires:	sed >= 4.0
 %if %{with splashy}
-BuildRequires:	libjpeg-static
-BuildRequires:	freetype-static
-BuildRequires:	libpng-static
 BuildRequires:	DirectFB-static
+BuildRequires:	freetype-static
+BuildRequires:	libjpeg-static
+BuildRequires:	libpng-static
 BuildRequires:	splashy-static
 %endif
 BuildRequires:	zlib-devel
@@ -59,15 +59,16 @@ na dysku lub w pamięci RAM pod Linuksem.
 %{__autoheader}
 %{__autoconf}
 %{__automake}
-
 %configure
-%{__make} 
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
