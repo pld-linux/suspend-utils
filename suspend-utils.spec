@@ -7,7 +7,7 @@ Summary(de.UTF-8):	Einfrieren in den Systemspeicher
 Summary(pl.UTF-8):	Zamrażanie w RAM/Dysku/Jedno i drugie
 Name:		suspend
 Version:	0.8
-Release:	0.%{snap}.1
+Release:	0.%{snap}.2
 License:	GPL v2
 Group:		Applications/System
 Source0:	%{name}-%{snap}.tar.bz2
@@ -62,8 +62,17 @@ na dysku lub w pamięci RAM pod Linuksem.
 %{__autoheader}
 %{__autoconf}
 %{__automake}
+<<<<<<< suspend.spec
+
+%configure \
+	%{?with_splashy:--enable-splashy} \
+	--enable-compress \
+	--enable-encrypt
+%{__make} 
+=======
 %configure
 %{__make}
+>>>>>>> 1.53
 
 %install
 rm -rf $RPM_BUILD_ROOT
