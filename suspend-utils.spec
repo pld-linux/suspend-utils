@@ -1,7 +1,7 @@
 #
 %bcond_with	splashy
 #
-%define	snap	20081009
+%define		snap	20090403
 Summary:	Suspend to RAM/Disk/Both
 Summary(de.UTF-8):	Einfrieren in den Systemspeicher
 Summary(pl.UTF-8):	Zamrażanie w RAM/Dysku/Jedno i drugie
@@ -10,9 +10,11 @@ Version:	0.8
 Release:	0.%{snap}.1
 License:	GPL v2
 Group:		Applications/System
+# cvs -z3 -d:pserver:anonymous@suspend.cvs.sf.net:/cvsroot/suspend co suspend
 Source0:	%{name}-%{snap}.tar.bz2
-# Source0-md5:	24d0c374ef7b5f2fdb95213de43891d4
+# Source0-md5:	91616804cabb90656daaed8a5cf1da20
 Patch0:		%{name}-sys-file-range-write.patch
+Patch1:		%{name}-fadvise.patch
 URL:		http://sourceforge.net/projects/suspend
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -34,6 +36,7 @@ BuildRequires:	libpng-static
 BuildRequires:	splashy-static
 %endif
 BuildRequires:	zlib-devel
+Requires:	uname(release) >= 2.6.17
 Conflicts:	geninitrd < 8880
 ExclusiveArch:	%{ix86} %{x8664} ppc ppc64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -55,6 +58,7 @@ na dysku lub w pamięci RAM pod Linuksem.
 %prep
 %setup -q -n %{name}
 %patch0 -p1
+%patch1 -p2
 
 %build
 %{__libtoolize}
@@ -67,7 +71,7 @@ na dysku lub w pamięci RAM pod Linuksem.
 	%{?with_splashy:--enable-splashy} \
 	--enable-compress \
 	--enable-encrypt
-%{__make} 
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
