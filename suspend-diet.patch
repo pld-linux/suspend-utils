@@ -1,0 +1,95 @@
+diff -ur suspend/radeontool.c suspend-diet/radeontool.c
+--- suspend/radeontool.c	2007-09-13 21:38:10.000000000 +0200
++++ suspend-diet/radeontool.c	2009-04-06 15:09:50.000000000 +0200
+@@ -26,6 +26,9 @@
+ #include <sys/stat.h>
+ #include <fcntl.h>
+ #include <sys/mman.h>
++#ifdef __dietlibc__
++#define PCI_HAVE_STDINT_H
++#endif
+ #include <pci/pci.h>
+ 
+ #define RADEON_LVDS_GEN_CNTL                0x02d0
+diff -ur suspend/s2ram-x86.c suspend-diet/s2ram-x86.c
+--- suspend/s2ram-x86.c	2008-11-03 16:12:53.000000000 +0100
++++ suspend-diet/s2ram-x86.c	2009-04-06 15:09:34.000000000 +0200
+@@ -15,6 +15,9 @@
+ #include <dirent.h>
+ #include <unistd.h>
+ 
++#ifdef __dietlibc__
++#define PCI_HAVE_STDINT_H
++#endif
+ #include <pci/pci.h>
+ 
+ #include "vbetool/vbetool.h"
+diff -ur suspend/suspend_ioctls.h suspend-diet/suspend_ioctls.h
+--- suspend/suspend_ioctls.h	2008-05-06 14:01:06.000000000 +0200
++++ suspend-diet/suspend_ioctls.h	2009-04-06 15:03:00.000000000 +0200
+@@ -8,7 +8,11 @@
+  */
+ struct resume_swap_area {
+ 	loff_t offset;
++#ifdef __dietlibc__
++	uint32_t dev;
++#else
+ 	u_int32_t dev;
++#endif
+ } __attribute__((packed));
+ 
+ #define SNAPSHOT_IOC_MAGIC	'3'
+diff -ur suspend/swsusp.h suspend-diet/swsusp.h
+--- suspend/swsusp.h	2009-04-06 15:11:06.000000000 +0200
++++ suspend-diet/swsusp.h	2009-04-06 15:03:27.000000000 +0200
+@@ -115,6 +115,9 @@
+ 	return ioctl(dev, SNAPSHOT_PMOPS, PMOPS_FINISH);
+ }
+ 
++#ifdef __dietlibc__
++#define SYS_reboot SYS_REBOOT_NR
++#endif
+ static inline void reboot(void)
+ {
+ 	syscall(SYS_reboot, LINUX_REBOOT_MAGIC1, LINUX_REBOOT_MAGIC2,
+diff -ur suspend/vbetool/vbetool.c suspend-diet/vbetool/vbetool.c
+--- suspend/vbetool/vbetool.c	2008-04-23 17:45:56.000000000 +0200
++++ suspend-diet/vbetool/vbetool.c	2009-04-06 15:10:05.000000000 +0200
+@@ -8,6 +8,9 @@
+ version 2
+ */
+ 
++#ifdef __dietlibc__
++#define PCI_HAVE_STDINT_H
++#endif
+ #include <pci/pci.h>
+ #include <assert.h>
+ #include <stdio.h>
+--- suspend/load.c~	2009-04-06 15:36:54.000000000 +0200
++++ suspend/load.c	2009-04-06 15:43:48.000000000 +0200
+@@ -135,10 +135,12 @@
+ 	memset(handle->extents + n, 0, sizeof(struct extent));
+ 	handle->cur_extent = handle->extents;
+ 	handle->cur_offset = handle->cur_extent->start;
++#ifndef __dietlibc__
+ 	if (posix_fadvise(handle->fd, handle->cur_offset,
+ 			handle->cur_extent->end - handle->cur_offset,
+ 			POSIX_FADV_NOREUSE))
+ 		perror("posix_fadvise");
++#endif
+ 	return 0;
+ }
+ 
+@@ -221,10 +223,12 @@
+ 	handle->cur_extent++;
+ 	if (handle->cur_extent->start < handle->cur_extent->end) {
+ 		handle->cur_offset = handle->cur_extent->start;
++#ifndef __dietlibc__
+ 		if (posix_fadvise(handle->fd, handle->cur_offset,
+ 				handle->cur_extent->end - handle->cur_offset,
+ 				POSIX_FADV_NOREUSE))
+ 			perror("posix_fadvise");
++#endif
+ 		return;
+ 	}
+ 	/* No more extents.  Load the next extents page. */
