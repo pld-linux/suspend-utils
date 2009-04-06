@@ -1,13 +1,21 @@
 #
 %bcond_with	splashy
+%bcond_without	initrd		# don't build resume-initrd
+%bcond_without	dietlibc	# link initrd version with static glibc
 #
+
+# no-can-link splashy with dietlibc
+%if %{with splashy}
+%undefine with_dietlibc
+%endif
+
 %define		snap	20090403
 Summary:	Suspend to RAM/Disk/Both
 Summary(de.UTF-8):	Einfrieren in den Systemspeicher
 Summary(pl.UTF-8):	Zamrażanie w RAM/Dysku/Jedno i drugie
 Name:		suspend
 Version:	0.8
-Release:	0.%{snap}.1
+Release:	0.%{snap}.2
 License:	GPL v2
 Group:		Applications/System
 # cvs -z3 -d:pserver:anonymous@suspend.cvs.sf.net:/cvsroot/suspend co suspend
@@ -15,9 +23,13 @@ Source0:	%{name}-%{snap}.tar.bz2
 # Source0-md5:	91616804cabb90656daaed8a5cf1da20
 Patch0:		%{name}-sys-file-range-write.patch
 Patch1:		%{name}-fadvise.patch
+Patch2:		%{name}-diet.patch
 URL:		http://sourceforge.net/projects/suspend
 BuildRequires:	autoconf
 BuildRequires:	automake
+%if %{with initrd}
+%{?with_dietlibc:BuildRequires:	dietlibc-static}
+%endif
 BuildRequires:	glibc-static
 BuildRequires:	libgcrypt-static
 BuildRequires:	libgpg-error-static
@@ -55,10 +67,35 @@ oder auf die Festplatte.
 Elementy przestrzeni użytkownika potrzebne do zamrażania stanu systemu
 na dysku lub w pamięci RAM pod Linuksem.
 
+%package initrd
+Summary:	Suspend to RAM/Disk/Both resume program for initrd
+Summary(pl.UTF-8):	Zamrażanie w RAM/Dysku/Jedno i drugie - program resume dla initrd
+Group:		Base
+
+%description initrd
+Suspend to RAM/Disk/Both resume program for initrd.
+
+%description initrd -l pl.UTF-8
+Zamrażanie w RAM/Dysku/Jedno i drugie - program resume dla initrd.
+
 %prep
 %setup -q -n %{name}
 %patch0 -p1
 %patch1 -p2
+%patch2 -p1
+
+cat >syscalltest.c <<EOF
+#include <stdio.h>
+#include <sys/syscall.h>
+int main() { printf("%d", SYS_reboot); return 0; }
+EOF
+gcc syscalltest.c -o syscalltest
+SYS_REBOOT_NR=`./syscalltest`
+
+sed -i -e "s/SYS_REBOOT_NR/$SYS_REBOOT_NR/" swsusp.h
+
+# I don't see any issue here (nor libgcc_s.a)
+%{?with_splashy:sed -i -e 's|AC_CHECK_LIB(\[gcc_s\], \[strlen\])||' configure.ac}
 
 %build
 %{__libtoolize}
@@ -67,10 +104,34 @@ na dysku lub w pamięci RAM pod Linuksem.
 %{__autoconf}
 %{__automake}
 
+%if %{with initrd}
+%configure \
+	%{?with_dietlibc:CFLAGS="%{rpmcflags} -D_BSD_SOURCE -Os -static"} \
+	%{?with_dietlibc:CC="diet %{__cc}"} \
+	%{?with_splashy:--enable-splashy} \
+	--enable-compress \
+	--enable-encrypt \
+	--enable-static \
+	--disable-shared
+
+%if %{with dietlibc}
+%{__make} libsuspend-common.a resume-resume.o
+diet %{__cc} %{rpmcflags} %{rpmldflags} -D_BSD_SOURCE -Os -static \
+	-DS2RAM -D_LARGEFILE64_SOURCE -D_GNU_SOURCE \
+	-o resume resume-resume.o \
+	libsuspend-common.a -llzo2 -lgcrypt -lgpg-error -lcompat
+%else
+%{__make} resume
+%endif
+mv resume resume-initrd
+%{__make} clean
+%endif
+
 %configure \
 	%{?with_splashy:--enable-splashy} \
 	--enable-compress \
 	--enable-encrypt
+
 %{__make}
 
 %install
@@ -78,6 +139,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+%if %{with initrd}
+install -d $RPM_BUILD_ROOT%{_libdir}/initrd
+install resume-initrd $RPM_BUILD_ROOT%{_libdir}/initrd/resume
+%endif
 
 rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}
 
@@ -91,3 +157,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/suspend
 %attr(755,root,root) %{_libdir}/suspend/resume
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/suspend.conf
+
+%if %{with initrd}
+%files initrd
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/initrd/resume
+%endif
