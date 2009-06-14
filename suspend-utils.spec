@@ -15,7 +15,7 @@ Summary(de.UTF-8):	Einfrieren in den Systemspeicher
 Summary(pl.UTF-8):	Zamrażanie w RAM/Dysku/Jedno i drugie
 Name:		suspend
 Version:	0.8
-Release:	0.%{snap}.2
+Release:	0.%{snap}.3
 License:	GPL v2
 Group:		Applications/System
 # cvs -z3 -d:pserver:anonymous@suspend.cvs.sf.net:/cvsroot/suspend co suspend
@@ -24,6 +24,7 @@ Source0:	%{name}-%{snap}.tar.bz2
 Patch0:		%{name}-sys-file-range-write.patch
 Patch1:		%{name}-fadvise.patch
 Patch2:		%{name}-diet.patch
+Patch3:		%{name}-neverhang.patch
 URL:		http://sourceforge.net/projects/suspend
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -83,6 +84,7 @@ Zamrażanie w RAM/Dysku/Jedno i drugie - program resume dla initrd.
 %patch0 -p1
 %patch1 -p2
 %patch2 -p1
+%patch3 -p1
 
 cat >syscalltest.c <<EOF
 #include <stdio.h>
