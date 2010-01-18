@@ -39,6 +39,7 @@ BuildRequires:	lzo-static >= 2.02
 BuildRequires:	libx86-static
 %endif
 BuildRequires:	pciutils-devel
+BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
 %if %{with splashy}
 BuildRequires:	DirectFB-static
@@ -89,7 +90,7 @@ cat >syscalltest.c <<EOF
 #include <sys/syscall.h>
 int main() { printf("%d", SYS_reboot); return 0; }
 EOF
-gcc syscalltest.c -o syscalltest
+%{__cc} syscalltest.c -o syscalltest
 SYS_REBOOT_NR=`./syscalltest`
 
 sed -i -e "s/SYS_REBOOT_NR/$SYS_REBOOT_NR/" swsusp.h
