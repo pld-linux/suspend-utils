@@ -9,7 +9,7 @@
 %undefine with_dietlibc
 %endif
 
-%define		snap	20100118
+%define		snap	20101027
 Summary:	Suspend to RAM/Disk/Both
 Summary(de.UTF-8):	Einfrieren in den Systemspeicher
 Summary(pl.UTF-8):	Zamrażanie w RAM/Dysku/Jedno i drugie
@@ -20,10 +20,11 @@ License:	GPL v2
 Group:		Applications/System
 # git clone git://git.kernel.org/pub/scm/linux/kernel/git/rafael/suspend-utils.git
 Source0:	%{name}-%{snap}.tar.bz2
-# Source0-md5:	a4bc7b06acd4f87363efcf66e7607c06
+# Source0-md5:	8f745115f0510895eb8cc16c760fb9af
 Patch0:		%{name}-sys-file-range-write.patch
 Patch1:		%{name}-fadvise.patch
 Patch2:		%{name}-diet.patch
+Patch3:		%{name}-whitelist.patch
 URL:		http://sourceforge.net/projects/suspend
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -84,6 +85,7 @@ Zamrażanie w RAM/Dysku/Jedno i drugie - program resume dla initrd.
 %patch0 -p1
 %patch1 -p2
 %patch2 -p1
+%patch3 -p1
 
 cat >syscalltest.c <<EOF
 #include <stdio.h>
