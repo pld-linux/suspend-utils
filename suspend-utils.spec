@@ -9,22 +9,22 @@
 %undefine with_dietlibc
 %endif
 
-%define		snap	20101027
 Summary:	Suspend to RAM/Disk/Both
 Summary(de.UTF-8):	Einfrieren in den Systemspeicher
 Summary(pl.UTF-8):	Zamrażanie w RAM/Dysku/Jedno i drugie
-Name:		suspend
-Version:	0.8
-Release:	0.%{snap}.1
+Name:		suspend-utils
+Version:	1.0
+Release:	1
 License:	GPL v2
 Group:		Applications/System
 # git clone git://git.kernel.org/pub/scm/linux/kernel/git/rafael/suspend-utils.git
-Source0:	%{name}-%{snap}.tar.bz2
-# Source0-md5:	8f745115f0510895eb8cc16c760fb9af
-Patch0:		%{name}-sys-file-range-write.patch
-Patch1:		%{name}-fadvise.patch
-Patch2:		%{name}-diet.patch
-Patch3:		%{name}-whitelist.patch
+# Source0:	%{name}-%{snap}.tar.bz2
+Source0:	http://dl.sourceforge.net/project/suspend/suspend/suspend-1.0/suspend-utils-1.0.tar.bz2
+# Source0-md5:	02f7d4b679bad1bb294a0efe48ce5934
+Source1:	wlcsv2c.pl
+Patch0:		suspend-sys-file-range-write.patch
+Patch1:		suspend-fadvise.patch
+Patch2:		suspend-diet.patch
 URL:		http://sourceforge.net/projects/suspend
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -52,6 +52,8 @@ BuildRequires:	splashy-static
 BuildRequires:	zlib-devel
 Requires:	uname(release) >= 2.6.17
 Conflicts:	geninitrd < 8880
+Provides:	suspend = %{version}-%{release}
+Obsoletes:	suspend < 1.0
 ExclusiveArch:	%{ix86} %{x8664} ppc ppc64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -81,11 +83,12 @@ Suspend to RAM/Disk/Both resume program for initrd.
 Zamrażanie w RAM/Dysku/Jedno i drugie - program resume dla initrd.
 
 %prep
-%setup -q -n %{name}-utils
+%setup -q
 %patch0 -p1
 %patch1 -p2
 %patch2 -p1
-%patch3 -p1
+
+install %{SOURCE1} .
 
 cat >syscalltest.c <<EOF
 #include <stdio.h>
@@ -133,6 +136,7 @@ mv resume resume-initrd
 %configure \
 	%{?with_splashy:--enable-splashy} \
 	--enable-compress \
+	--enable-threads \
 	--enable-encrypt
 
 %{__make}
@@ -155,7 +159,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc HOWTO README* TODO
+%doc HOWTO README* AUTHORS ReleaseNotes
 %attr(755,root,root) %{_sbindir}/*
 %dir %{_libdir}/suspend
 %attr(755,root,root) %{_libdir}/suspend/resume
