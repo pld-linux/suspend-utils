@@ -11,7 +11,7 @@
 
 Summary:	Suspend to RAM/Disk/Both
 Summary(de.UTF-8):	Einfrieren in den Systemspeicher
-Summary(pl.UTF-8):	Zamrażanie w RAM/Dysku/Jedno i drugie
+Summary(pl.UTF-8):	Zamrażanie w RAM/na dysku/jedno i drugie
 Name:		suspend-utils
 Version:	1.0
 Release:	1
@@ -73,8 +73,9 @@ na dysku lub w pamięci RAM pod Linuksem.
 
 %package initrd
 Summary:	Suspend to RAM/Disk/Both resume program for initrd
-Summary(pl.UTF-8):	Zamrażanie w RAM/Dysku/Jedno i drugie - program resume dla initrd
+Summary(pl.UTF-8):	Zamrażanie w RAM/na dysku/jedno i drugie - program resume dla initrd
 Group:		Base
+Obsoletes:	suspend-initrd < 1.0
 
 %description initrd
 Suspend to RAM/Disk/Both resume program for initrd.
