@@ -9,19 +9,20 @@
 %undefine with_dietlibc
 %endif
 
+%define		rel		0.1
+%define		subver	g668c5f7
 Summary:	Suspend to RAM/Disk/Both
 Summary(de.UTF-8):	Einfrieren in den Systemspeicher
 Summary(pl.UTF-8):	Zamrażanie w RAM/na dysku/jedno i drugie
 Name:		suspend-utils
 Version:	1.0
-Release:	1
+Release:	1.%{subver}.%{rel}
 License:	GPL v2
 Group:		Applications/System
-# git clone git://git.kernel.org/pub/scm/linux/kernel/git/rafael/suspend-utils.git
-# Source0:	%{name}-%{snap}.tar.bz2
-Source0:	http://dl.sourceforge.net/project/suspend/suspend/suspend-1.0/suspend-utils-1.0.tar.bz2
-# Source0-md5:	02f7d4b679bad1bb294a0efe48ce5934
-Source1:	wlcsv2c.pl
+#Source0:	http://dl.sourceforge.net/project/suspend/suspend/suspend-1.0/suspend-utils-1.0.tar.bz2
+Source0:	%{name}-%{version}.%{subver}.tar.gz
+# Source0-md5:	02ef3a7af0524de300f333879831c782
+Source1:	get-source.sh
 Patch0:		suspend-sys-file-range-write.patch
 Patch1:		suspend-fadvise.patch
 Patch2:		suspend-diet.patch
@@ -84,20 +85,18 @@ Suspend to RAM/Disk/Both resume program for initrd.
 Zamrażanie w RAM/Dysku/Jedno i drugie - program resume dla initrd.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}.%{subver}
 %patch0 -p1
 %patch1 -p2
 %patch2 -p1
 
-install %{SOURCE1} .
-
-cat >syscalltest.c <<EOF
+cat > syscalltest.c <<EOF
 #include <stdio.h>
 #include <sys/syscall.h>
 int main() { printf("%d", SYS_reboot); return 0; }
 EOF
 %{__cc} syscalltest.c -o syscalltest
-SYS_REBOOT_NR=`./syscalltest`
+SYS_REBOOT_NR=$(./syscalltest)
 
 sed -i -e "s/SYS_REBOOT_NR/$SYS_REBOOT_NR/" swsusp.h
 
@@ -146,6 +145,7 @@ mv resume resume-initrd
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT%{_sysconfdir}
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
@@ -161,11 +161,20 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc HOWTO README* AUTHORS ReleaseNotes
-%attr(755,root,root) %{_sbindir}/*
+%doc HOWTO README* AUTHORS
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/suspend.conf
+%attr(755,root,root) %{_sbindir}/s2both
+%attr(755,root,root) %{_sbindir}/s2disk
+%attr(755,root,root) %{_sbindir}/s2ram
+%attr(755,root,root) %{_sbindir}/suspend-keygen
+%attr(755,root,root) %{_sbindir}/swap-offset
+%{_mandir}/man5/suspend.conf.5*
+%{_mandir}/man8/s2disk.8*
+%{_mandir}/man8/s2ram.8*
+%{_mandir}/man8/suspend-keygen.8*
+%{_mandir}/man8/swap-offset.8*
 %dir %{_libdir}/suspend
 %attr(755,root,root) %{_libdir}/suspend/resume
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/suspend.conf
 
 %if %{with initrd}
 %files initrd

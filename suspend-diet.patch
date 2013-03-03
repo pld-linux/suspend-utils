@@ -24,21 +24,20 @@ diff -ur suspend/s2ram-x86.c suspend-diet/s2ram-x86.c
  #include <pci/pci.h>
  
  #include "vbetool/vbetool.h"
-diff -ur suspend/suspend_ioctls.h suspend-diet/suspend_ioctls.h
---- suspend/suspend_ioctls.h	2008-05-06 14:01:06.000000000 +0200
-+++ suspend-diet/suspend_ioctls.h	2009-04-06 15:03:00.000000000 +0200
-@@ -8,7 +8,11 @@
-  */
- struct resume_swap_area {
- 	loff_t offset;
-+#ifdef __dietlibc__
-+	uint32_t dev;
-+#else
- 	u_int32_t dev;
-+#endif
- } __attribute__((packed));
- 
- #define SNAPSHOT_IOC_MAGIC	'3'
+#--- suspend/suspend_ioctls.h	2008-05-06 14:01:06.000000000 +0200
+#+++ suspend-diet/suspend_ioctls.h	2009-04-06 15:03:00.000000000 +0200
+#@@ -8,7 +8,11 @@
+#  */
+# struct resume_swap_area {
+# 	loff_t offset;
+#+#ifdef __dietlibc__
+#+	uint32_t dev;
+#+#else
+# 	u_int32_t dev;
+#+#endif
+# } __attribute__((packed));
+# 
+# #define SNAPSHOT_IOC_MAGIC	'3'
 diff -ur suspend/swsusp.h suspend-diet/swsusp.h
 --- suspend/swsusp.h	2009-04-06 15:11:06.000000000 +0200
 +++ suspend-diet/swsusp.h	2009-04-06 15:03:27.000000000 +0200
