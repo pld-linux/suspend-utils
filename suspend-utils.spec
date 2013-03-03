@@ -51,9 +51,9 @@ BuildRequires:	splashy-static
 %endif
 BuildRequires:	zlib-devel
 Requires:	uname(release) >= 2.6.17
-Conflicts:	geninitrd < 8880
 Provides:	suspend = %{version}-%{release}
 Obsoletes:	suspend < 1.0
+Conflicts:	geninitrd < 8880
 ExclusiveArch:	%{ix86} %{x8664} ppc ppc64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -112,9 +112,11 @@ sed -i -e "s/SYS_REBOOT_NR/$SYS_REBOOT_NR/" swsusp.h
 %{__automake}
 
 %if %{with initrd}
+__cc="%{__cc}"
+__cc=${__cc#ccache }
 %configure \
 	%{?with_dietlibc:CFLAGS="%{rpmcflags} -D_BSD_SOURCE -Os -static"} \
-	%{?with_dietlibc:CC="diet %{__cc}"} \
+	%{?with_dietlibc:CC="diet ${__cc}"} \
 	%{?with_splashy:--enable-splashy} \
 	--enable-compress \
 	--enable-encrypt \
@@ -123,7 +125,7 @@ sed -i -e "s/SYS_REBOOT_NR/$SYS_REBOOT_NR/" swsusp.h
 
 %if %{with dietlibc}
 %{__make} libsuspend-common.a resume-resume.o
-diet %{__cc} %{rpmcflags} %{rpmldflags} -D_BSD_SOURCE -Os -static \
+diet ${__cc} %{rpmcflags} %{rpmldflags} -D_BSD_SOURCE -Os -static \
 	-DS2RAM -D_LARGEFILE64_SOURCE -D_GNU_SOURCE \
 	-o resume resume-resume.o \
 	libsuspend-common.a -llzo2 -lgcrypt -lgpg-error -lcompat
@@ -144,13 +146,12 @@ mv resume resume-initrd
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 %if %{with initrd}
 install -d $RPM_BUILD_ROOT%{_libdir}/initrd
-install resume-initrd $RPM_BUILD_ROOT%{_libdir}/initrd/resume
+install -p resume-initrd $RPM_BUILD_ROOT%{_libdir}/initrd/resume
 %endif
 
 rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}
