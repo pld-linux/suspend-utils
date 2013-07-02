@@ -1,0 +1,12 @@
+diff -urN suspend-utils-1.0.g668c5f7.org/configure.ac suspend-utils-1.0.g668c5f7/configure.ac
+--- suspend-utils-1.0.g668c5f7.org/configure.ac	2012-09-15 22:23:44.000000000 +0200
++++ suspend-utils-1.0.g668c5f7/configure.ac	2013-07-02 22:05:30.884207944 +0200
+@@ -9,7 +9,7 @@
+ AC_PREREQ([2.59])
+ AC_INIT([suspend-utils], [1.0])
+ AM_INIT_AUTOMAKE([${PACKAGE_NAME}], [${PACKAGE_VERSION}])
+-AM_CONFIG_HEADER([config.h])
++AC_CONFIG_HEADERS([config.h])
+ AC_CONFIG_SRCDIR([suspend.c])
+ AC_CONFIG_MACRO_DIR([m4])
+ 

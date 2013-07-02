@@ -9,7 +9,7 @@
 %undefine with_dietlibc
 %endif
 
-%define		rel		0.1
+%define		rel		1
 %define		subver	g668c5f7
 Summary:	Suspend to RAM/Disk/Both
 Summary(de.UTF-8):	Einfrieren in den Systemspeicher
@@ -26,6 +26,8 @@ Source1:	get-source.sh
 Patch0:		suspend-sys-file-range-write.patch
 Patch1:		suspend-fadvise.patch
 Patch2:		suspend-diet.patch
+Patch3:		suspend-utils-conf.patch
+Patch4:		suspend-utils-build.patch
 URL:		http://sourceforge.net/projects/suspend
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -41,6 +43,7 @@ BuildRequires:	lzo-static >= 2.02
 BuildRequires:	libx86-static
 %endif
 BuildRequires:	pciutils-devel
+BuildRequires:	perl-Switch
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
 %if %{with splashy}
@@ -89,6 +92,8 @@ Zamrażanie w RAM/Dysku/Jedno i drugie - program resume dla initrd.
 %patch0 -p1
 %patch1 -p2
 %patch2 -p1
+%patch3 -p1
+%patch4 -p1
 
 cat > syscalltest.c <<EOF
 #include <stdio.h>

@@ -1,0 +1,11 @@
+diff -urN suspend-utils-1.0.g668c5f7.org/conf/suspend.conf suspend-utils-1.0.g668c5f7/conf/suspend.conf
+--- suspend-utils-1.0.g668c5f7.org/conf/suspend.conf	2012-09-15 22:23:44.000000000 +0200
++++ suspend-utils-1.0.g668c5f7/conf/suspend.conf	2013-07-02 22:01:04.681619040 +0200
+@@ -1,5 +1,5 @@
+-snapshot device = /dev/snapshot
+-resume device = <path_to_resume_device_file>
++#snapshot device = /dev/snapshot
++#resume device = <path_to_resume_device_file>
+ #image size = 350000000
+ #suspend loglevel = 2
+ #compute checksum = y
