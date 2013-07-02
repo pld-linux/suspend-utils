@@ -14,7 +14,7 @@ Summary(de.UTF-8):	Einfrieren in den Systemspeicher
 Summary(pl.UTF-8):	Zamrażanie w RAM/na dysku/jedno i drugie
 Name:		suspend-utils
 Version:	1.0
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Applications/System
 # git clone git://git.kernel.org/pub/scm/linux/kernel/git/rafael/suspend-utils.git
@@ -25,6 +25,8 @@ Source1:	wlcsv2c.pl
 Patch0:		suspend-sys-file-range-write.patch
 Patch1:		suspend-fadvise.patch
 Patch2:		suspend-diet.patch
+Patch3:		suspend-utils-conf.patch
+Patch4:		suspend-utils-build.patch
 URL:		http://sourceforge.net/projects/suspend
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -40,6 +42,7 @@ BuildRequires:	lzo-static >= 2.02
 BuildRequires:	libx86-static
 %endif
 BuildRequires:	pciutils-devel
+BuildRequires:	perl-Switch
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
 %if %{with splashy}
@@ -88,6 +91,8 @@ Zamrażanie w RAM/Dysku/Jedno i drugie - program resume dla initrd.
 %patch0 -p1
 %patch1 -p2
 %patch2 -p1
+%patch3 -p1
+%patch4 -p1
 
 install %{SOURCE1} .
 
@@ -146,6 +151,9 @@ mv resume resume-initrd
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
+install -d $RPM_BUILD_ROOT/etc
+
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
