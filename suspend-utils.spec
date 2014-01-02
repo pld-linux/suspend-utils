@@ -16,7 +16,7 @@ Summary(de.UTF-8):	Einfrieren in den Systemspeicher
 Summary(pl.UTF-8):	Zamrażanie w RAM/na dysku/jedno i drugie
 Name:		suspend-utils
 Version:	1.0
-Release:	3
+Release:	4
 License:	GPL v2
 Group:		Applications/System
 # git clone git://git.kernel.org/pub/scm/linux/kernel/git/rafael/suspend-utils.git
