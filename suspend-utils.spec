@@ -1,7 +1,7 @@
 #
 %bcond_without	plymouth
 %bcond_with	splashy
-%bcond_without	initrd		# don't build resume-initrd
+%bcond_with	initrd		# don't build resume-initrd
 %bcond_without	dietlibc	# link initrd version with static glibc
 #
 
