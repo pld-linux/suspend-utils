@@ -1,0 +1,15 @@
+Index: suspend-utils-1.0/s2ram-x86.c
+===================================================================
+--- suspend-utils-1.0.orig/s2ram-x86.c
++++ suspend-utils-1.0/s2ram-x86.c
+@@ -61,8 +61,8 @@ static int set_acpi_video_mode(int mode)
+ 	unsigned long acpi_video_flags;
+ 	FILE *f = fopen("/proc/sys/kernel/acpi_video_flags", "r");
+ 	if (!f) {
+-		printf("/proc/sys/kernel/acpi_video_flags does not exist; you need a kernel >=2.6.16.\n");
+-		return S2RAM_FAIL;
++		printf("/proc/sys/kernel/acpi_video_flags does not exist; ignoring\n");
++		return S2RAM_OK;
+ 	}
+ 	/* read the old setting from /proc */
+ 	if (fscanf(f, "%ld", &acpi_video_flags) != 1) {

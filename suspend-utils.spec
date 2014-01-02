@@ -1,4 +1,5 @@
 #
+%bcond_without	plymouth
 %bcond_with	splashy
 %bcond_without	initrd		# don't build resume-initrd
 %bcond_without	dietlibc	# link initrd version with static glibc
@@ -27,6 +28,10 @@ Patch1:		suspend-fadvise.patch
 Patch2:		suspend-diet.patch
 Patch3:		suspend-utils-conf.patch
 Patch4:		suspend-utils-build.patch
+Patch5:		suspend-ignore-acpi-video-flags-not-available.patch
+Patch6:		suspend-plymouth.patch
+Patch7:		s2disk-do-not-fail-without-local-terminals.patch
+Patch8:		s2disk-disable-splash-when-unable-to-switch-vts.patch
 URL:		http://sourceforge.net/projects/suspend
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -45,6 +50,7 @@ BuildRequires:	pciutils-devel
 BuildRequires:	perl-Switch
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
+%{?with_plymouth:BuildRequires:	plymouth-static >= 0.8.8-8}
 %if %{with splashy}
 BuildRequires:	DirectFB-static
 BuildRequires:	freetype-static
@@ -93,6 +99,10 @@ Zamrażanie w RAM/Dysku/Jedno i drugie - program resume dla initrd.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
+%patch6 -p1
+%patch7 -p1
+%patch8 -p1
 
 install %{SOURCE1} .
 
@@ -143,6 +153,7 @@ mv resume resume-initrd
 
 %configure \
 	%{?with_splashy:--enable-splashy} \
+	%{?with_plymouth:--enable-plymouth} \
 	--enable-compress \
 	--enable-threads \
 	--enable-encrypt
