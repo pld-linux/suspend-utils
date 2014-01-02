@@ -3,6 +3,7 @@
 %bcond_with	splashy
 %bcond_with	initrd		# don't build resume-initrd
 %bcond_without	dietlibc	# link initrd version with static glibc
+%bcond_with	encrypt		# build s2disk with image encryption support
 #
 
 # no-can-link splashy with dietlibc
@@ -39,8 +40,10 @@ BuildRequires:	automake
 %{?with_dietlibc:BuildRequires:	dietlibc-static}
 %endif
 BuildRequires:	glibc-static
+%if %{with encrypt}
 BuildRequires:	libgcrypt-static
 BuildRequires:	libgpg-error-static
+%endif
 BuildRequires:	libtool
 BuildRequires:	lzo-static >= 2.02
 %ifarch %{ix86} %{x8664}
@@ -133,8 +136,8 @@ __cc=${__cc#ccache }
 	%{?with_dietlibc:CFLAGS="%{rpmcflags} -D_BSD_SOURCE -Os -static"} \
 	%{?with_dietlibc:CC="diet ${__cc}"} \
 	%{?with_splashy:--enable-splashy} \
+	%{__enable_disable encrypt} \
 	--enable-compress \
-	--enable-encrypt \
 	--enable-static \
 	--disable-shared
 
@@ -143,7 +146,7 @@ __cc=${__cc#ccache }
 diet ${__cc} %{rpmcflags} %{rpmldflags} -D_BSD_SOURCE -Os -static \
 	-DS2RAM -D_LARGEFILE64_SOURCE -D_GNU_SOURCE \
 	-o resume resume-resume.o \
-	libsuspend-common.a -llzo2 -lgcrypt -lgpg-error -lcompat
+	libsuspend-common.a -llzo2 %{?with_encrypt:-lgcrypt -lgpg-error} -lcompat
 %else
 %{__make} resume
 %endif
@@ -154,9 +157,9 @@ mv resume resume-initrd
 %configure \
 	%{?with_splashy:--enable-splashy} \
 	%{?with_plymouth:--enable-plymouth} \
+	%{__enable_disable encrypt} \
 	--enable-compress \
 	--enable-threads \
-	--enable-encrypt
 
 %{__make}
 
@@ -177,6 +180,15 @@ rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%if %{without encrypt}
+%post
+%banner suspend-utils -e <<EOF
+Warning!
+This version of suspend-utils is built without support
+for encrypted s2disk images.
+EOF
+%endif
 
 %files
 %defattr(644,root,root,755)
