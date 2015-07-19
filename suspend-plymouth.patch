@@ -213,7 +213,7 @@ Index: suspend-utils-1.0/plymouth_funcs.c
 +		fprintf(stderr,"could not open splash\n");
 +		return ret;
 +	}
-+	renderer = ply_renderer_new (NULL, NULL, terminal);
++	renderer = ply_renderer_new (PLY_RENDERER_TYPE_AUTO, NULL, terminal);
 +	if ((ret = ply_renderer_open (renderer))== 0) {
 +		fprintf(stderr,"could not open renderer /dev/fb\n");
 +		return ret;
