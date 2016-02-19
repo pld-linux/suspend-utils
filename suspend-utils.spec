@@ -1,12 +1,14 @@
 #
-%bcond_with	plymouth
-%bcond_with	splashy
-%bcond_with	initrd		# don't build resume-initrd
+# Conditional build:
+%bcond_with	plymouth	# plymouth support
+%bcond_with	splashy		# splashy support
+%bcond_with	initrd		# resume-initrd binary
 %bcond_without	dietlibc	# link initrd version with static glibc
-%bcond_with	encrypt		# build s2disk with image encryption support
+%bcond_without	compress	# LZO image compression support
+%bcond_with	encrypt		# image encryption support in s2disk
 #
 
-# no-can-link splashy with dietlibc
+# cannot link splashy with dietlibc
 %if %{with splashy}
 %undefine with_dietlibc
 %endif
@@ -20,8 +22,7 @@ Release:	5
 License:	GPL v2
 Group:		Applications/System
 # git clone git://git.kernel.org/pub/scm/linux/kernel/git/rafael/suspend-utils.git
-# Source0:	%{name}-%{snap}.tar.bz2
-Source0:	http://dl.sourceforge.net/project/suspend/suspend/suspend-1.0/suspend-utils-1.0.tar.bz2
+Source0:	http://downloads.sourceforge.net/suspend/%{name}-%{version}.tar.bz2
 # Source0-md5:	02f7d4b679bad1bb294a0efe48ce5934
 Source1:	wlcsv2c.pl
 Patch0:		suspend-sys-file-range-write.patch
@@ -33,8 +34,8 @@ Patch5:		suspend-ignore-acpi-video-flags-not-available.patch
 Patch6:		suspend-plymouth.patch
 Patch7:		s2disk-do-not-fail-without-local-terminals.patch
 Patch8:		s2disk-disable-splash-when-unable-to-switch-vts.patch
-URL:		http://sourceforge.net/projects/suspend
-BuildRequires:	autoconf
+URL:		http://suspend.sourceforge.net/
+BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
 %if %{with initrd}
 %{?with_dietlibc:BuildRequires:	dietlibc-static}
@@ -45,11 +46,11 @@ BuildRequires:	libgcrypt-static
 BuildRequires:	libgpg-error-static
 %endif
 BuildRequires:	libtool
-BuildRequires:	lzo-static >= 2.02
+%{?with_compress:BuildRequires:	lzo-static >= 2.02}
 %ifarch %{ix86} %{x8664}
-BuildRequires:	libx86-static
+BuildRequires:	libx86-devel
 %endif
-BuildRequires:	pciutils-devel
+BuildRequires:	pciutils-devel >= 2.2.4
 BuildRequires:	perl-Switch
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
@@ -137,7 +138,7 @@ __cc=${__cc#ccache }
 	%{?with_dietlibc:CC="diet ${__cc}"} \
 	%{?with_splashy:--enable-splashy} \
 	%{__enable_disable encrypt} \
-	--enable-compress \
+	%{?with_compress:--enable-compress} \
 	--enable-static \
 	--disable-shared
 
@@ -146,11 +147,11 @@ __cc=${__cc#ccache }
 diet ${__cc} %{rpmcflags} %{rpmldflags} -D_BSD_SOURCE -Os -static \
 	-DS2RAM -D_LARGEFILE64_SOURCE -D_GNU_SOURCE \
 	-o resume resume-resume.o \
-	libsuspend-common.a -llzo2 %{?with_encrypt:-lgcrypt -lgpg-error} -lcompat
+	libsuspend-common.a %{?with_compress:-llzo2} %{?with_encrypt:-lgcrypt -lgpg-error} -lcompat
 %else
 %{__make} resume
 %endif
-mv resume resume-initrd
+%{__mv} resume resume-initrd
 %{__make} clean
 %endif
 
@@ -158,7 +159,7 @@ mv resume resume-initrd
 	%{?with_splashy:--enable-splashy} \
 	%{?with_plymouth:--enable-plymouth} \
 	%{__enable_disable encrypt} \
-	--enable-compress \
+	%{?with_compress:--enable-compress} \
 	--enable-threads \
 
 %{__make}
@@ -193,7 +194,13 @@ EOF
 %files
 %defattr(644,root,root,755)
 %doc HOWTO README* AUTHORS ReleaseNotes
-%attr(755,root,root) %{_sbindir}/*
+%attr(755,root,root) %{_sbindir}/s2both
+%attr(755,root,root) %{_sbindir}/s2disk
+%attr(755,root,root) %{_sbindir}/s2ram
+%if %{with encrypt}
+%attr(755,root,root) %{_sbindir}/suspend-keygen
+%endif
+%attr(755,root,root) %{_sbindir}/swap-offset
 %dir %{_libdir}/suspend
 %attr(755,root,root) %{_libdir}/suspend/resume
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/suspend.conf
